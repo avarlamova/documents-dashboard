@@ -1,28 +1,65 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Документы</h1>
+    <SearchBar />
+    <div v-for="category in categories" :key="category.id">
+      <draggable
+        group="people"
+        @start="drag = true"
+        @end="drag = false"
+        ghost-class="ghost"
+        drag-class="drag"
+      >
+        <!-- <transition-group type="transition" name="flip-list"> -->
+
+        <DocumentCategory
+          :key="category.id"
+          :title="category.title"
+          :default-expanded="category.isExpandedByDefault"
+          :description="category.description"
+          :tags="category.tags"
+          :id="category.id"
+        />
+        <!-- </transition-group> -->
+      </draggable>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import DocumentCategory from "./components/DocumentCategory.vue";
+import SearchBar from "./components/SearchBar.vue";
+import draggable from "vuedraggable";
+
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'App',
+  name: "App",
+  data() {
+    return {
+      // categories:
+    };
+  },
   components: {
-    HelloWorld
-  }
-}
+    DocumentCategory,
+    SearchBar,
+    draggable,
+  },
+  computed: {
+    ...mapGetters(["categories"]),
+  },
+};
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  font-family: "Fira Sans", sans-serif;
+  margin-left: 30px;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 </style>
