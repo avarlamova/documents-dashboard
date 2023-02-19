@@ -21,6 +21,8 @@
       </div>
 
       <span class="description">{{ description }}</span>
+      <div class="overlayDiv"></div>
+
       <div class="iconsContainer">
         <img src="../assets/icons/edit.svg" alt="edit cat" class="edit" />
         <img
@@ -113,8 +115,8 @@ export default {
   cursor: pointer;
   display: flex;
   align-items: center;
-  width: 1190px;
-  /* height: 28px; */
+  width: 1155px;
+  max-height: 28px;
   background: #ffffff;
   border: 1px solid #dfe4ef;
   padding: 13px 17px 13px 16px;
@@ -134,21 +136,28 @@ h2 {
   font-weight: 500;
   font-size: 15px;
   color: #000000;
-  margin-right: 15px;
+  margin-right: 16px;
+  white-space: nowrap;
 }
 
 .description {
   font-weight: 400;
   font-size: 11px;
+  word-break: break-all;
+  white-space: nowrap;
+  overflow: hidden;
+  height: 12px;
   line-height: 12px;
   color: #8e9cbb;
 }
 
 .overlayDiv {
-  width: 20px;
+  position: absolute;
+  right: 0px;
+  width: 147px;
   height: 14px;
-
-  background: linear-gradient(270deg, #ffffff 0%, rgba(255, 255, 255, 0) 50%);
+  // background: red;
+  background: linear-gradient(270deg, #fff 84%, rgba(255, 255, 255, 0) 100%);
 }
 
 .ghost {
@@ -170,6 +179,7 @@ h2 {
 
 .iconsContainer {
   position: absolute;
+  z-index: 10;
   right: 17px;
   display: flex;
   align-items: center;

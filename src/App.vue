@@ -55,6 +55,14 @@ export default {
 #app {
   font-family: "Fira Sans", sans-serif;
   margin-left: 30px;
+  margin-top: 38px;
+}
+
+h1 {
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 24px;
+  color: #000000;
 }
 
 ul {

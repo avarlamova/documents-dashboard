@@ -54,6 +54,7 @@ export default {
   align-items: center;
   border-bottom: 1px solid #bfc9e0;
   margin-bottom: 19px;
+  margin-top: 23px;
 
   & input {
     width: 564px;
