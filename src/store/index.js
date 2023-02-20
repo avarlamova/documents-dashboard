@@ -32,7 +32,7 @@ const store = new Vuex.Store({
         categoryId: 1,
         id: 4,
         title: "Паспорт",
-        tags: [{ color: "lightBlue" }],
+        tags: [{ color: "lightblue" }],
         isRequired: true,
         description: "Для всех",
       },

@@ -1,18 +1,21 @@
 <template>
   <section>
-    <div class="catContainer" @click="toggleCategory">
-      <!-- <img :src="require(`${iconSrc}`)" alt="icon image" /> -->
+    <div
+      class="catContainer"
+      :class="[isExpanded && documents.length > 0 ? 'expanded' : '']"
+      @click="toggleCategory"
+    >
       <img
         v-if="isExpanded"
         src="../assets/icons/icon-expanded.svg"
         alt="icon image"
-        class="expandedIcon"
+        class="icon"
       />
       <img
         v-else
         src="../assets/icons/icon-closed.svg"
         alt="icon image"
-        class="expandedIcon"
+        class="icon"
       />
       <h2>{{ title }}</h2>
 
@@ -34,8 +37,7 @@
       </div>
       <!-- <div class="overlayDiv"></div> -->
     </div>
-    <!-- TODO remove! -->
-    <ul v-if="false">
+    <ul class="documents" v-if="documents.length > 0 && isExpanded">
       <li v-for="document in documents" :key="document.id">
         <Document
           :id="document.id"
@@ -119,10 +121,21 @@ export default {
   max-height: 28px;
   background: #ffffff;
   border: 1px solid #dfe4ef;
+  border-bottom: none;
   padding: 13px 17px 13px 16px;
+
+  &.expanded {
+    border-bottom: 1px solid #dfe4ef;
+  }
 }
 
-.expandedIcon {
+// section {
+//   & .ghost {
+//     background-color: red;
+//   }
+// }
+
+.icon {
   margin-right: 14px;
 }
 
@@ -164,18 +177,28 @@ h2 {
   // background-color: #0066ff;
   // height: 5px;
   // box-shadow: 0px 3px 16px rgba(0, 102, 255, 0.7);
-  opacity: 0.5;
-  background: #c8ebfb;
-}
-.chosen {
-  /* transform: rotate(5deg); */
-  background-color: green;
-  & .container {
-    border: 1px solid #dfe4ef;
+  // opacity: 0.2;
+  // background: #c8ebfb;
 
-    box-shadow: 0px 3px 16px rgba(0, 102, 255, 0.7);
-  }
+  // & > div {
+  //   visibility: hidden;
+  // }
+
+  // &::after {
+  //   content: "";
+  //   opacity: 1 !important;
+  //   height: 5px;
+  //   width: 1160px;
+  //   position: absolute;
+  //   background: #0066ff;
+  // }
 }
+// .drag {
+//   & .catContainer {
+//     border: 1px solid #dfe4ef;
+//     box-shadow: 0px 3px 16px rgba(0, 102, 255, 0.7);
+//   }
+// }
 
 .iconsContainer {
   position: absolute;
@@ -190,6 +213,25 @@ h2 {
   }
 }
 
+.documents {
+  & li {
+    display: block;
+    &:first-child {
+      & div {
+        border-top: none;
+      }
+    }
+  }
+  &:last-child {
+    & div {
+      border-bottom: none;
+    }
+  }
+}
+
+//   & :last-child {
+//     border: 2px solid red;
+//   }
 .blocked {
   opacity: 0.5;
   cursor: default;
