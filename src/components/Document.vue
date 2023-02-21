@@ -1,8 +1,8 @@
 <template>
-  <div class="container">
+  <div class="document container">
     <h3>{{ title }}</h3>
-    <div class="tagsContainer" v-for="tag in tags" :key="tag.color">
-      <Tag :color="tag.color" />
+    <div v-if="tags && tags.length > 0" class="tagsContainer">
+      <Tag v-for="tag in tags" :key="tag.color" :color="tag.color" />
     </div>
     <span v-if="isRequired" class="required">Обязательный</span>
     <span class="description">{{ description }}</span>
@@ -60,13 +60,6 @@ export default {
   margin-left: 16px;
   padding: 9px 10px 11px 15px;
   border: 1px solid #dfe4ef;
-}
-
-.tagsContainer {
-  display: flex;
-  /* как в категории */
-  gap: 8px;
-  margin-right: 15px;
 }
 
 h3 {

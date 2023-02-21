@@ -72,6 +72,9 @@ const store = new Vuex.Store({
     getDocuments: (state) => (categoryId) => {
       return state.documents.filter((doc) => doc.categoryId === categoryId);
     },
+    uncategorizedDocuments: (state) => {
+      return state.documents.filter((doc) => !doc.categoryId);
+    },
     getSearchedCategories: (state) => {
       return state.documents;
     },

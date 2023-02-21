@@ -48,17 +48,17 @@ export default {
 <style scoped lang="scss">
 .container {
   width: 564px;
-  height: 30px;
+  height: 17px;
   display: flex;
   position: relative;
   align-items: center;
   border-bottom: 1px solid #bfc9e0;
   margin-bottom: 19px;
   margin-top: 23px;
-
-  & input {
-    width: 564px;
-  }
+  padding-bottom: 12px;
+  //   & input {
+  //     width: 564px;
+  //   }
 
   input:focus {
     outline: none;
@@ -91,6 +91,8 @@ export default {
   }
 }
 .searchIcon {
+  width: 14px;
+  height: 14px;
   margin-right: 12px;
 }
 

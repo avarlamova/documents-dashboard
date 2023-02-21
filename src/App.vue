@@ -29,6 +29,18 @@
         />
       </draggable>
 
+      <draggable class="uncategorizedContainer">
+        <Document
+          v-for="document in uncategorizedDocuments"
+          :key="document.id"
+          :id="document.id"
+          :title="document.title"
+          :description="document.description"
+          :is-required="document.isRequired"
+          :tags="document.tags"
+        />
+      </draggable>
+
       <!-- <div class="testcont">
       <draggable animation="150">
         <DocumentCategory id="46" :title="t4tle" />
@@ -41,6 +53,7 @@
 
 <script>
 import DocumentCategory from "./components/DocumentCategory.vue";
+import Document from "./components/Document.vue";
 import SearchBar from "./components/SearchBar.vue";
 import draggable from "vuedraggable";
 
@@ -57,10 +70,11 @@ export default {
   components: {
     DocumentCategory,
     SearchBar,
+    Document,
     draggable,
   },
   computed: {
-    ...mapGetters(["categories"]),
+    ...mapGetters(["categories", "uncategorizedDocuments"]),
   },
   methods: {},
 };
@@ -70,25 +84,23 @@ export default {
 #app {
   font-family: "Fira Sans", sans-serif;
   background-color: grey;
+  position: relative;
+}
+h1 {
+  font-weight: 500;
+  margin: 0 !important;
+  font-size: 22px !important;
+  line-height: 24px;
+  color: #000000;
 }
 
 .wrapper {
   position: relative;
-
   background-color: white;
   height: 100vh;
-  // margin-left: 30px;
-  // margin-top: 38px;
   margin: 0 auto;
   padding: 38px 30px;
   width: 1190px;
-}
-
-h1 {
-  font-weight: 500;
-  font-size: 22px;
-  line-height: 24px;
-  color: #000000;
 }
 
 ul {
@@ -97,20 +109,28 @@ ul {
   padding: 0;
 }
 
-.categoriesContainer {
-  width: 1190px;
-  &:last-child {
-    border-bottom: 1px solid #dfe4ef;
-  }
+// .categoriesContainer {
+//   width: 1190px;
+// }
+
+.uncategorizedContainer {
+  margin-top: 14px;
 }
 
 .sortable-ghost {
-  width: 1190px;
-  border: 1px solid blue;
-  background: blue;
-  height: 5px;
-  overflow: hidden;
+  // width: 1190px;
+  border: 1px solid $blue;
+  box-shadow: 0px 3px 16px rgba(0, 102, 255, 0.7);
+
+  // background: $blue;
+  // height: 5px;
+  // overflow: hidden;
 }
+
+.ghost {
+  opacity: 0.5;
+}
+
 .btnsContainer {
   position: absolute;
   right: 30px;

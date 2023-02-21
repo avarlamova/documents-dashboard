@@ -40,4 +40,12 @@ export default {
 .pink {
   background-color: $pink;
 }
+
+.gray {
+  background-color: $gray;
+}
+
+.blue {
+  background-color: $blue;
+}
 </style>

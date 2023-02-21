@@ -1,44 +1,41 @@
 <template>
   <section>
-    <div
-      class="catContainer"
-      :class="[isExpanded && documents.length > 0 ? 'expanded' : '']"
-      @click="toggleCategory"
-    >
-      <img
-        v-if="isExpanded"
-        src="../assets/icons/icon-expanded.svg"
-        alt="icon image"
-        class="icon"
-      />
-      <img
-        v-else
-        src="../assets/icons/icon-closed.svg"
-        alt="icon image"
-        class="icon"
-      />
-      <h2>{{ title }}</h2>
-
-      <div v-if="tags" class="tagsContainer">
-        <Tag v-for="tag in tags" :key="tag.color" :color="tag.color" />
-      </div>
-
-      <span class="description">{{ description }}</span>
-      <div class="overlayDiv"></div>
-
-      <div class="iconsContainer">
-        <img src="../assets/icons/edit.svg" alt="edit cat" class="edit" />
+    <div class="catContainer" @click="toggleCategory">
+      <div class="innerContainer">
         <img
-          src="../assets/icons/delete.svg"
-          alt="delete cat"
-          :class="[isExpanded ? 'blocked' : 'delete']"
+          v-if="isExpanded"
+          src="../assets/icons/icon-expanded.svg"
+          alt="icon image"
+          class="icon"
         />
-        <img src="../assets/icons/move.svg" alt="move cat" class="move" />
+        <img
+          v-else
+          src="../assets/icons/icon-closed.svg"
+          alt="icon image"
+          class="icon"
+        />
+        <h2>{{ title }}</h2>
+
+        <div v-if="tags && tags.length > 0" class="tagsContainer">
+          <Tag v-for="tag in tags" :key="tag.color" :color="tag.color" />
+        </div>
+
+        <span class="description">{{ description }}</span>
+        <div class="overlayDiv"></div>
+
+        <div class="iconsContainer">
+          <img src="../assets/icons/edit.svg" alt="edit cat" class="edit" />
+          <img
+            src="../assets/icons/delete.svg"
+            alt="delete cat"
+            :class="[isExpanded ? 'blocked' : 'delete']"
+          />
+          <img src="../assets/icons/move.svg" alt="move cat" class="move" />
+        </div>
       </div>
-      <!-- <div class="overlayDiv"></div> -->
     </div>
     <ul class="documents" v-if="documents.length > 0 && isExpanded">
-      <li v-for="document in documents" :key="document.id">
+      <li class="document" v-for="document in documents" :key="document.id">
         <Document
           :id="document.id"
           :title="document.title"
@@ -99,11 +96,7 @@ export default {
   beforeMount() {
     this.isExpanded = this.defaultExpanded;
   },
-  watch: {
-    drag() {
-      console.log(this.drag);
-    },
-  },
+  watch: {},
   components: {
     Tag,
     Document,
@@ -115,18 +108,17 @@ export default {
 .catContainer {
   position: relative;
   cursor: pointer;
-  display: flex;
-  align-items: center;
   width: 1155px;
   max-height: 28px;
+  margin-top: -1px;
   background: #ffffff;
   border: 1px solid #dfe4ef;
-  border-bottom: none;
   padding: 13px 17px 13px 16px;
+}
 
-  &.expanded {
-    border-bottom: 1px solid #dfe4ef;
-  }
+.innerContainer {
+  display: flex;
+  align-items: center;
 }
 
 // section {
@@ -213,20 +205,9 @@ h2 {
   }
 }
 
-.documents {
-  & li {
-    display: block;
-    &:first-child {
-      & div {
-        border-top: none;
-      }
-    }
-  }
-  &:last-child {
-    & div {
-      border-bottom: none;
-    }
-  }
+.document {
+  display: block;
+  margin-top: -1px;
 }
 
 //   & :last-child {
