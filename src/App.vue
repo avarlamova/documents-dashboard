@@ -17,7 +17,12 @@
       </div>
       <SearchBar />
 
-      <draggable animation="150" class="categoriesContainer">
+      <draggable
+        v-model="categories"
+        animation="150"
+        class="categoriesContainer"
+        handle=".handle"
+      >
         <DocumentCategory
           v-for="category in categories"
           :key="category.id"
@@ -25,11 +30,12 @@
           :default-expanded="category.isExpandedByDefault"
           :description="category.description"
           :tags="category.tags"
+          :documents="category.documents"
           :id="category.id"
         />
       </draggable>
 
-      <draggable class="uncategorizedContainer">
+      <draggable class="uncategorizedContainer" :group="{ name: 'myGroup' }">
         <Document
           v-for="document in uncategorizedDocuments"
           :key="document.id"
@@ -57,14 +63,14 @@ import Document from "./components/Document.vue";
 import SearchBar from "./components/SearchBar.vue";
 import draggable from "vuedraggable";
 
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "App",
   data() {
     return {
-      dragged_index: null,
-      is_dragging: false,
+      // dragged_index: null,
+      // is_dragging: false,
     };
   },
   components: {
@@ -74,9 +80,28 @@ export default {
     draggable,
   },
   computed: {
-    ...mapGetters(["categories", "uncategorizedDocuments"]),
+    ...mapGetters(["uncategorizedDocuments"]),
+
+    categories: {
+      get() {
+        return this.$store.state.categories;
+      },
+      set(value) {
+        this.updateCategories(value);
+      },
+    },
+    uncategorizedDocuments: {
+      get() {
+        return this.$store.state.uncategorizedDocuments;
+      },
+      set(value) {
+        this.updateDocuments(value);
+      },
+    },
   },
-  methods: {},
+  methods: {
+    ...mapActions(["updateCategories"]),
+  },
 };
 </script>
 
@@ -121,10 +146,12 @@ ul {
   // width: 1190px;
   border: 1px solid $blue;
   box-shadow: 0px 3px 16px rgba(0, 102, 255, 0.7);
-
   // background: $blue;
   // height: 5px;
   // overflow: hidden;
+}
+
+.sortable-chosen {
 }
 
 .ghost {

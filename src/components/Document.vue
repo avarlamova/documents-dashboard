@@ -9,13 +9,14 @@
     <div class="iconsContainer">
       <img src="../assets/icons/edit.svg" alt="edit cat" class="edit" />
       <img src="../assets/icons/delete.svg" alt="delete cat" />
-      <img src="../assets/icons/move.svg" alt="move cat" class="move" />
+      <drag-icon />
     </div>
   </div>
 </template>
 
 <script>
 import Tag from "./UI/Tag.vue";
+import DragIcon from "./UI/DragIcon.vue";
 
 export default {
   name: "Document",
@@ -46,6 +47,7 @@ export default {
   },
   components: {
     Tag,
+    DragIcon,
   },
 };
 </script>

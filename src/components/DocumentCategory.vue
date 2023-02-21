@@ -30,33 +30,44 @@
             alt="delete cat"
             :class="[isExpanded ? 'blocked' : 'delete']"
           />
-          <img src="../assets/icons/move.svg" alt="move cat" class="move" />
+          <drag-icon />
         </div>
       </div>
     </div>
-    <ul class="documents" v-if="documents.length > 0 && isExpanded">
-      <li class="document" v-for="document in documents" :key="document.id">
+    <!-- <DocumentsList :items="documents"/> -->
+    <div
+      class="documents"
+      v-if="documents && documents.length > 0 && isExpanded"
+    >
+      <draggable v-model="updatedDocs" :group="{ name: 'documents' }">
         <Document
+          v-for="document in documents"
+          :key="document.id"
           :id="document.id"
           :title="document.title"
           :description="document.description"
           :is-required="document.isRequired"
           :tags="document.tags"
         />
-      </li>
-    </ul>
+      </draggable>
+    </div>
   </section>
 </template>
 
 <script>
 import Tag from "./UI/Tag.vue";
-import Document from "./Document.vue";
+import draggable from "vuedraggable";
+import Document from "./Document";
+
+import DragIcon from "./UI/DragIcon.vue";
+import { mapActions } from "vuex";
 
 export default {
   name: "DocumentGroup",
   data() {
     return {
       isExpanded: false,
+      updatedDocs: [],
     };
   },
   props: {
@@ -76,30 +87,32 @@ export default {
       type: String,
     },
     tags: [],
-    // documents: [],
-  },
-  computed: {
-    documents: {
-      get() {
-        return this.$store.getters.getDocuments(this.id);
-      },
-      set(value) {
-        this.$store.commit("updateList", value);
-      },
-    },
+    documents: [],
   },
   methods: {
     toggleCategory() {
       this.isExpanded = !this.isExpanded;
     },
+
+    ...mapActions(["updateDocuments"]),
   },
-  beforeMount() {
+  watch: {
+    updatedDocs(newVal) {
+      if (newVal) {
+        this.updateDocuments({ id: this.id, value: newVal });
+      }
+    },
+  },
+  created() {
     this.isExpanded = this.defaultExpanded;
+    this.updatedDocs = this.documents;
   },
-  watch: {},
+
   components: {
     Tag,
+    draggable,
     Document,
+    DragIcon,
   },
 };
 </script>

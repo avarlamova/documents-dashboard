@@ -12,6 +12,14 @@ const store = new Vuex.Store({
         description:
           "Документы, без которых невозможно трудоустройство человека на какую бы то ни было должность в компании вне зависимости от гражданства",
         isExpandedByDefault: false,
+        documents: [
+          {
+            categoryId: 2,
+            id: 9,
+            title: "Cat2",
+            isRequired: true,
+          },
+        ],
       },
       {
         id: 1,
@@ -20,29 +28,39 @@ const store = new Vuex.Store({
         description:
           "Документы, обязательные для всех сотрудников без исключения",
         tags: [{ color: "pink" }, { color: "yellow" }, { color: "orange" }],
+        documents: [
+          {
+            categoryId: 1,
+            id: 4,
+            title: "Паспорт",
+            tags: [{ color: "lightblue" }],
+            isRequired: true,
+            description: "Для всех",
+          },
+          {
+            categoryId: 1,
+            id: 5,
+            title: "ИНН",
+            isRequired: true,
+            description: "Для всех",
+          },
+        ],
       },
       {
         id: 3,
         title: "Специальные",
         isExpandedByDefault: false,
+        documents: [
+          {
+            categoryId: 3,
+            id: 10,
+            title: "Cat3",
+            isRequired: true,
+          },
+        ],
       },
     ],
-    documents: [
-      {
-        categoryId: 1,
-        id: 4,
-        title: "Паспорт",
-        tags: [{ color: "lightblue" }],
-        isRequired: true,
-        description: "Для всех",
-      },
-      {
-        categoryId: 1,
-        id: 5,
-        title: "ИНН",
-        isRequired: true,
-        description: "Для всех",
-      },
+    uncategorizedDocuments: [
       {
         id: 6,
         title: "Тестовое задание кандидата",
@@ -69,12 +87,15 @@ const store = new Vuex.Store({
     categories: (state) => {
       return state.categories;
     },
+    uncategorizedDocuments: (state) => {
+      return state.uncategorizedDocuments;
+    },
     getDocuments: (state) => (categoryId) => {
       return state.documents.filter((doc) => doc.categoryId === categoryId);
     },
-    uncategorizedDocuments: (state) => {
-      return state.documents.filter((doc) => !doc.categoryId);
-    },
+    // uncategorizedDocuments: (state) => {
+    //   return state.documents.filter((doc) => !doc.categoryId);
+    // },
     getSearchedCategories: (state) => {
       return state.documents;
     },
@@ -91,11 +112,25 @@ const store = new Vuex.Store({
     SET_SEARCH_QUERY(state, payload) {
       state.searchQuery = payload;
     },
+    UPDATE_CATEGORIES(state, payload) {
+      state.categories = payload;
+    },
+    UPDATE_DOCUMENTS(state, payload) {
+      const { id, value } = payload;
+      console.log(id, value);
+      const targetCategory = state.categories.find((cat) => cat.id == id);
+      targetCategory.documents = value;
+    },
   },
   actions: {
     setQuery({ commit }, payload) {
-      console.log(payload);
       commit("SET_SEARCH_QUERY", payload);
+    },
+    updateCategories({ commit }, payload) {
+      commit("UPDATE_CATEGORIES", payload);
+    },
+    updateDocuments({ commit }, payload) {
+      commit("UPDATE_DOCUMENTS", payload);
     },
   },
 });
