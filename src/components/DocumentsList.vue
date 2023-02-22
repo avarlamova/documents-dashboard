@@ -8,7 +8,7 @@
       handle=".handle"
     >
       <Document
-        v-for="item in updatedItems"
+        v-for="item in items"
         :key="item.id"
         :id="item.id"
         :title="item.title"
@@ -61,7 +61,6 @@ export default {
     },
     ...mapActions(["addDocument", "removeDocument"]),
   },
-
   created() {
     this.updatedItems = this.items;
   },

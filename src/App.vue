@@ -16,7 +16,6 @@
         </button>
       </div>
       <SearchBar />
-
       <draggable
         v-model="categories"
         animation="150"
