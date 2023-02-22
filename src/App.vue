@@ -48,7 +48,7 @@ import DocumentsList from "./components/DocumentsList.vue";
 import SearchBar from "./components/SearchBar.vue";
 import draggable from "vuedraggable";
 
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "App",
@@ -59,7 +59,7 @@ export default {
     draggable,
   },
   computed: {
-    ...mapGetters(["uncategorizedDocuments", "getCategories"]),
+    ...mapGetters(["getUncategorizedDocuments", "getCategories"]),
 
     categories: {
       get() {
@@ -71,9 +71,12 @@ export default {
     },
     uncategorizedDocuments: {
       get() {
-        return this.$store.state.uncategorizedDocuments;
+        return this.getUncategorizedDocuments;
       },
     },
+  },
+  methods: {
+    ...mapActions(["updateCategories"]),
   },
 };
 </script>
@@ -107,15 +110,12 @@ ul {
   padding: 0;
 }
 
-.item-dropzone-area {
-  height: 2rem;
-  background: red;
-  opacity: 0.8;
-  animation-duration: 0.5s;
-  animation-name: nodeInserted;
-}
 .uncategorizedContainer {
   margin-top: 14px;
+  & .container {
+    margin-left: 0px;
+    width: 1163px;
+  }
 }
 
 .sortable-ghost {

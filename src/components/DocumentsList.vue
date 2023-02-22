@@ -61,6 +61,7 @@ export default {
     },
     ...mapActions(["addDocument", "removeDocument"]),
   },
+
   created() {
     this.updatedItems = this.items;
   },

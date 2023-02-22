@@ -34,35 +34,17 @@
         </div>
       </div>
     </div>
-    <!-- :class="[isExpanded ? 'expanded' : '']" -->
-
-    <DocumentsList :items="documents" :id="id" v-show="isExpanded" />
-    <!-- <div
-      class="documents"
-      v-if="documents && documents.length > 0 && isExpanded"
-    >
-      <draggable v-model="updatedDocs" :group="{ name: 'documents' }">
-        <Document
-          v-for="document in documents"
-          :key="document.id"
-          :id="document.id"
-          :title="document.title"
-          :description="document.description"
-          :is-required="document.isRequired"
-          :tags="document.tags"
-        />
-      </draggable>
-    </div> -->
+    <!-- :class="[isExpanded ? 'expanded' : '']"
+  -->
+    <DocumentsList v-show="isExpanded" :items="documents" :id="id" />
   </section>
 </template>
 
 <script>
 import Tag from "./UI/Tag.vue";
-// import draggable from "vuedraggable";
-// import Document from "./Document";
 import DocumentsList from "./DocumentsList";
 import DragIcon from "./UI/DragIcon.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "DocumentGroup",
@@ -95,17 +77,21 @@ export default {
     toggleCategory() {
       this.isExpanded = !this.isExpanded;
     },
-
     ...mapActions(["updateDocuments"]),
   },
-
+  computed: {
+    ...mapGetters(["hasSearchQuery"]),
+  },
+  watch: {
+    hasSearchQuery() {
+      //раскрывать категорию, если в ней искомые документы
+      if (this.hasSearchQuery) {
+        this.isExpanded = true;
+      }
+    },
+  },
   created() {
     this.isExpanded = this.defaultExpanded;
-    this.updatedDocs = this.documents.filter((document) =>
-      document.title
-        .toLowerCase()
-        .includes(this.$store.state.searchQuery.toLowerCase())
-    );
   },
 
   components: {

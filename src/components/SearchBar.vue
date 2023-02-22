@@ -99,6 +99,8 @@ export default {
   right: 0px;
 }
 input {
+  padding: 0;
+  margin: 0;
   border: none;
   font-weight: 400;
   font-size: 15px;

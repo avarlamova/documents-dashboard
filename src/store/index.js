@@ -85,35 +85,43 @@ const store = new Vuex.Store({
   },
   getters: {
     getCategories: (state) => {
-      return state.categories.filter(
-        (category) =>
-          category.title
-            .toLowerCase()
-            .includes(state.searchQuery.toLowerCase()) ||
-          // поиск по названиям  элементов в категории
-          category.documents.some((document) =>
-            document.title
+      const filteredCategories = state.categories
+        .map((category) => {
+          if (
+            category.title
               .toLowerCase()
               .includes(state.searchQuery.toLowerCase())
           )
-      );
+            return category;
+          else if (
+            category.documents.some((document) =>
+              document.title
+                .toLowerCase()
+                .includes(state.searchQuery.toLowerCase())
+            )
+          ) {
+            const newDocuments = category.documents.filter((document) =>
+              document.title
+                .toLowerCase()
+                .includes(state.searchQuery.toLowerCase())
+            );
+            return { ...category, documents: newDocuments };
+          }
+        })
+        .filter(Boolean);
+      return filteredCategories;
     },
-    uncategorizedDocuments: (state) => {
+    getUncategorizedDocuments: (state) => {
       return state.uncategorizedDocuments.filter((document) =>
         document.title.toLowerCase().includes(state.searchQuery.toLowerCase())
       );
     },
-    // getSearchedCategories: (state) => {
-    //   return state.documents;
-    // },
-    // getSearchedDocuments: (state) => {
-    //   if (state.searchQuery) {
-    //     return state.documents.filter(
-    //       (doc) => doc.indexOf(state.searchQuery.toLowerCase()) > 0
-    //     );
-    //   }
-    //   return state.documents;
-    // },
+    searchQuery: (state) => {
+      return state.searchQuery;
+    },
+    hasSearchQuery: (state) => {
+      return Boolean(state.searchQuery);
+    },
   },
   mutations: {
     SET_SEARCH_QUERY(state, payload) {
