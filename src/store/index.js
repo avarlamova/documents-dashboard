@@ -148,6 +148,17 @@ const store = new Vuex.Store({
         state.uncategorizedDocuments.splice(index, 1);
       }
     },
+    MOVE_DOCUMENT(state, payload) {
+      const { id, newIndex, oldIndex, movedItem } = payload;
+      const targetCategory = state.categories.find((cat) => cat.id == id);
+      if (targetCategory) {
+        targetCategory.documents.splice(oldIndex, 1);
+        targetCategory.documents.splice(newIndex, 0, movedItem);
+      } else {
+        state.uncategorizedDocuments.splice(oldIndex, 1);
+        state.uncategorizedDocuments.splice(newIndex, 0, movedItem);
+      }
+    },
   },
   actions: {
     setQuery({ commit }, payload) {
@@ -161,6 +172,9 @@ const store = new Vuex.Store({
     },
     removeDocument({ commit }, payload) {
       commit("REMOVE_DOCUMENT", payload);
+    },
+    moveDocument({ commit }, payload) {
+      commit("MOVE_DOCUMENT", payload);
     },
   },
 });

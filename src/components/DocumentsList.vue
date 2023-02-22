@@ -57,9 +57,16 @@ export default {
           id: this.id,
           index: item.removed.oldIndex,
         });
+      } else if (item.moved) {
+        this.moveDocument({
+          id: this.id,
+          oldIndex: item.moved.oldIndex,
+          newIndex: item.moved.newIndex,
+          movedItem: item.moved.element,
+        });
       }
     },
-    ...mapActions(["addDocument", "removeDocument"]),
+    ...mapActions(["addDocument", "removeDocument", "moveDocument"]),
   },
   created() {
     this.updatedItems = this.items;
