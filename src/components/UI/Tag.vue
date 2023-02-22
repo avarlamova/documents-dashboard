@@ -22,7 +22,6 @@ export default {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  //   background-color: v-bind(color);
 }
 
 .orange {

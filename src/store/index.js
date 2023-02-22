@@ -16,7 +16,7 @@ const store = new Vuex.Store({
           {
             categoryId: 2,
             id: 9,
-            title: "Cat2",
+            title: "Обязательный для трудоустройства документ",
             isRequired: true,
           },
         ],
@@ -54,7 +54,7 @@ const store = new Vuex.Store({
           {
             categoryId: 3,
             id: 10,
-            title: "Cat3",
+            title: "Специальный документ",
             isRequired: true,
           },
         ],
@@ -81,32 +81,39 @@ const store = new Vuex.Store({
         isRequired: false,
       },
     ],
-    searchQuery: "док",
+    searchQuery: "",
   },
   getters: {
-    categories: (state) => {
-      return state.categories;
+    getCategories: (state) => {
+      return state.categories.filter(
+        (category) =>
+          category.title
+            .toLowerCase()
+            .includes(state.searchQuery.toLowerCase()) ||
+          // поиск по названиям  элементов в категории
+          category.documents.some((document) =>
+            document.title
+              .toLowerCase()
+              .includes(state.searchQuery.toLowerCase())
+          )
+      );
     },
     uncategorizedDocuments: (state) => {
-      return state.uncategorizedDocuments;
+      return state.uncategorizedDocuments.filter((document) =>
+        document.title.toLowerCase().includes(state.searchQuery.toLowerCase())
+      );
     },
-    getDocuments: (state) => (categoryId) => {
-      return state.documents.filter((doc) => doc.categoryId === categoryId);
-    },
-    // uncategorizedDocuments: (state) => {
-    //   return state.documents.filter((doc) => !doc.categoryId);
+    // getSearchedCategories: (state) => {
+    //   return state.documents;
     // },
-    getSearchedCategories: (state) => {
-      return state.documents;
-    },
-    getSearchedDocuments: (state) => {
-      if (state.searchQuery) {
-        return state.documents.filter(
-          (doc) => doc.indexOf(state.searchQuery.toLowerCase()) > 0
-        );
-      }
-      return state.documents;
-    },
+    // getSearchedDocuments: (state) => {
+    //   if (state.searchQuery) {
+    //     return state.documents.filter(
+    //       (doc) => doc.indexOf(state.searchQuery.toLowerCase()) > 0
+    //     );
+    //   }
+    //   return state.documents;
+    // },
   },
   mutations: {
     SET_SEARCH_QUERY(state, payload) {
@@ -115,11 +122,23 @@ const store = new Vuex.Store({
     UPDATE_CATEGORIES(state, payload) {
       state.categories = payload;
     },
-    UPDATE_DOCUMENTS(state, payload) {
-      const { id, value } = payload;
-      console.log(id, value);
+    ADD_DOCUMENT(state, payload) {
+      const { id, newItem, index } = payload;
       const targetCategory = state.categories.find((cat) => cat.id == id);
-      targetCategory.documents = value;
+      if (targetCategory) {
+        targetCategory.documents.splice(index, 0, newItem);
+      } else {
+        state.uncategorizedDocuments.splice(index, 0, newItem);
+      }
+    },
+    REMOVE_DOCUMENT(state, payload) {
+      const { id, index } = payload;
+      const targetCategory = state.categories.find((cat) => cat.id == id);
+      if (targetCategory) {
+        targetCategory.documents.splice(index, 1);
+      } else {
+        state.uncategorizedDocuments.splice(index, 1);
+      }
     },
   },
   actions: {
@@ -129,8 +148,11 @@ const store = new Vuex.Store({
     updateCategories({ commit }, payload) {
       commit("UPDATE_CATEGORIES", payload);
     },
-    updateDocuments({ commit }, payload) {
-      commit("UPDATE_DOCUMENTS", payload);
+    addDocument({ commit }, payload) {
+      commit("ADD_DOCUMENT", payload);
+    },
+    removeDocument({ commit }, payload) {
+      commit("REMOVE_DOCUMENT", payload);
     },
   },
 });

@@ -34,8 +34,10 @@
         </div>
       </div>
     </div>
-    <!-- <DocumentsList :items="documents"/> -->
-    <div
+    <!-- :class="[isExpanded ? 'expanded' : '']" -->
+
+    <DocumentsList :items="documents" :id="id" v-show="isExpanded" />
+    <!-- <div
       class="documents"
       v-if="documents && documents.length > 0 && isExpanded"
     >
@@ -50,15 +52,15 @@
           :tags="document.tags"
         />
       </draggable>
-    </div>
+    </div> -->
   </section>
 </template>
 
 <script>
 import Tag from "./UI/Tag.vue";
-import draggable from "vuedraggable";
-import Document from "./Document";
-
+// import draggable from "vuedraggable";
+// import Document from "./Document";
+import DocumentsList from "./DocumentsList";
 import DragIcon from "./UI/DragIcon.vue";
 import { mapActions } from "vuex";
 
@@ -96,22 +98,19 @@ export default {
 
     ...mapActions(["updateDocuments"]),
   },
-  watch: {
-    updatedDocs(newVal) {
-      if (newVal) {
-        this.updateDocuments({ id: this.id, value: newVal });
-      }
-    },
-  },
+
   created() {
     this.isExpanded = this.defaultExpanded;
-    this.updatedDocs = this.documents;
+    this.updatedDocs = this.documents.filter((document) =>
+      document.title
+        .toLowerCase()
+        .includes(this.$store.state.searchQuery.toLowerCase())
+    );
   },
 
   components: {
     Tag,
-    draggable,
-    Document,
+    DocumentsList,
     DragIcon,
   },
 };
@@ -133,12 +132,6 @@ export default {
   display: flex;
   align-items: center;
 }
-
-// section {
-//   & .ghost {
-//     background-color: red;
-//   }
-// }
 
 .icon {
   margin-right: 14px;
@@ -174,36 +167,8 @@ h2 {
   right: 0px;
   width: 147px;
   height: 14px;
-  // background: red;
   background: linear-gradient(270deg, #fff 84%, rgba(255, 255, 255, 0) 100%);
 }
-
-.ghost {
-  // background-color: #0066ff;
-  // height: 5px;
-  // box-shadow: 0px 3px 16px rgba(0, 102, 255, 0.7);
-  // opacity: 0.2;
-  // background: #c8ebfb;
-
-  // & > div {
-  //   visibility: hidden;
-  // }
-
-  // &::after {
-  //   content: "";
-  //   opacity: 1 !important;
-  //   height: 5px;
-  //   width: 1160px;
-  //   position: absolute;
-  //   background: #0066ff;
-  // }
-}
-// .drag {
-//   & .catContainer {
-//     border: 1px solid #dfe4ef;
-//     box-shadow: 0px 3px 16px rgba(0, 102, 255, 0.7);
-//   }
-// }
 
 .iconsContainer {
   position: absolute;
@@ -223,9 +188,6 @@ h2 {
   margin-top: -1px;
 }
 
-//   & :last-child {
-//     border: 2px solid red;
-//   }
 .blocked {
   opacity: 0.5;
   cursor: default;

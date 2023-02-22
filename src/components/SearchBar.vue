@@ -56,9 +56,6 @@ export default {
   margin-bottom: 19px;
   margin-top: 23px;
   padding-bottom: 12px;
-  //   & input {
-  //     width: 564px;
-  //   }
 
   input:focus {
     outline: none;
@@ -106,5 +103,6 @@ input {
   font-weight: 400;
   font-size: 15px;
   line-height: 16px;
+  width: 500px;
 }
 </style>

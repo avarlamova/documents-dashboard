@@ -9,7 +9,7 @@
     <div class="iconsContainer">
       <img src="../assets/icons/edit.svg" alt="edit cat" class="edit" />
       <img src="../assets/icons/delete.svg" alt="delete cat" />
-      <drag-icon />
+      <drag-icon class="handle" />
     </div>
   </div>
 </template>
@@ -43,7 +43,6 @@ export default {
       type: String,
     },
     tags: [],
-    // documents: [],
   },
   components: {
     Tag,

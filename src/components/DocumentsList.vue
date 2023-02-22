@@ -1,16 +1,14 @@
 <template>
   <div class="documents">
-    <!-- <draggable
-      class="list-group"
-      v-model="list"
-      v-bind="dragOptions"
-      @start="isDrag = true"
-      @end="isDrag = false"
-      handle=".draggable-item-area"
-    > -->
-    <draggable tag="ul" :group="{ name: 'documents' }">
+    <draggable
+      tag="ul"
+      :group="{ name: 'documents' }"
+      v-model="updatedItems"
+      @change="changed"
+      handle=".handle"
+    >
       <Document
-        v-for="item in items"
+        v-for="item in updatedItems"
         :key="item.id"
         :id="item.id"
         :title="item.title"
@@ -25,17 +23,46 @@
 <script>
 import draggable from "vuedraggable";
 import Document from "./Document";
+import { mapActions } from "vuex";
 
 export default {
   name: "DocumentsList",
+  data() {
+    return {
+      updatedItems: [],
+    };
+  },
   props: {
     items: {
       required: true,
+    },
+    id: {
+      type: Number,
     },
   },
   components: {
     draggable,
     Document,
+  },
+  methods: {
+    changed(item) {
+      if (item.added) {
+        this.addDocument({
+          newItem: item.added.element,
+          id: this.id,
+          index: item.added.newIndex,
+        });
+      } else if (item.removed) {
+        this.removeDocument({
+          id: this.id,
+          index: item.removed.oldIndex,
+        });
+      }
+    },
+    ...mapActions(["addDocument", "removeDocument"]),
+  },
+  created() {
+    this.updatedItems = this.items;
   },
 };
 </script>

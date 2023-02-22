@@ -34,57 +34,36 @@
           :id="category.id"
         />
       </draggable>
-
-      <draggable class="uncategorizedContainer" :group="{ name: 'myGroup' }">
-        <Document
-          v-for="document in uncategorizedDocuments"
-          :key="document.id"
-          :id="document.id"
-          :title="document.title"
-          :description="document.description"
-          :is-required="document.isRequired"
-          :tags="document.tags"
-        />
-      </draggable>
-
-      <!-- <div class="testcont">
-      <draggable animation="150">
-        <DocumentCategory id="46" :title="t4tle" />
-        <DocumentCategory id="4" :title="ttle" />
-      </draggable>
-    </div> -->
+      <DocumentsList
+        class="uncategorizedContainer"
+        :items="uncategorizedDocuments"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import DocumentCategory from "./components/DocumentCategory.vue";
-import Document from "./components/Document.vue";
+import DocumentsList from "./components/DocumentsList.vue";
 import SearchBar from "./components/SearchBar.vue";
 import draggable from "vuedraggable";
 
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "App",
-  data() {
-    return {
-      // dragged_index: null,
-      // is_dragging: false,
-    };
-  },
   components: {
     DocumentCategory,
     SearchBar,
-    Document,
+    DocumentsList,
     draggable,
   },
   computed: {
-    ...mapGetters(["uncategorizedDocuments"]),
+    ...mapGetters(["uncategorizedDocuments", "getCategories"]),
 
     categories: {
       get() {
-        return this.$store.state.categories;
+        return this.getCategories;
       },
       set(value) {
         this.updateCategories(value);
@@ -94,13 +73,7 @@ export default {
       get() {
         return this.$store.state.uncategorizedDocuments;
       },
-      set(value) {
-        this.updateDocuments(value);
-      },
     },
-  },
-  methods: {
-    ...mapActions(["updateCategories"]),
   },
 };
 </script>
@@ -134,28 +107,23 @@ ul {
   padding: 0;
 }
 
-// .categoriesContainer {
-//   width: 1190px;
-// }
-
+.item-dropzone-area {
+  height: 2rem;
+  background: red;
+  opacity: 0.8;
+  animation-duration: 0.5s;
+  animation-name: nodeInserted;
+}
 .uncategorizedContainer {
   margin-top: 14px;
 }
 
 .sortable-ghost {
-  // width: 1190px;
-  border: 1px solid $blue;
-  box-shadow: 0px 3px 16px rgba(0, 102, 255, 0.7);
-  // background: $blue;
-  // height: 5px;
-  // overflow: hidden;
+  opacity: 0.5;
 }
 
 .sortable-chosen {
-}
-
-.ghost {
-  opacity: 0.5;
+  box-shadow: 0px 3px 16px rgba(0, 102, 255, 0.7);
 }
 
 .btnsContainer {
